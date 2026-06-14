@@ -1,17 +1,29 @@
 from datetime import datetime
 from pydantic import BaseModel, Field, field_validator
 
-from app.models import AppointmentStatus
+from app.models import AppointmentStatus, StudentTag
 
 
 class StudentCreate(BaseModel):
     name: str = Field(min_length=2, max_length=30)
     phone: str = Field(min_length=7, max_length=20)
     remaining_hours: int = Field(default=20, ge=0, le=200)
+    tags: list[StudentTag] = Field(default_factory=list)
 
 
 class StudentRead(StudentCreate):
     id: int
+
+
+class StudentTagsUpdate(BaseModel):
+    tags: list[StudentTag] = Field(default_factory=list)
+
+
+class AppointmentHint(BaseModel):
+    type: str
+    message: str
+    tag: StudentTag | None = None
+    level: str = "info"
 
 
 class CoachCreate(BaseModel):
@@ -45,6 +57,7 @@ class AppointmentRead(BaseModel):
     id: int
     student_id: int
     student_name: str
+    student_tags: list[str] = Field(default_factory=list)
     coach_id: int
     coach_name: str
     start_time: datetime
@@ -53,6 +66,7 @@ class AppointmentRead(BaseModel):
     created_at: datetime
     cancelled_at: datetime | None = None
     cancel_reason: str | None = None
+    hints: list[AppointmentHint] = Field(default_factory=list)
 
 
 class AppointmentCancel(BaseModel):

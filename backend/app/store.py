@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from app.models import Appointment, AppointmentStatus, CancelRule, Coach, Student
+from app.models import Appointment, AppointmentStatus, CancelRule, Coach, Student, StudentTag
 
 
 students: dict[int, Student] = {}
@@ -20,10 +20,38 @@ def seed_data() -> None:
     if students or coaches or appointments:
         return
 
-    s1 = Student(id=next_id("student"), name="张小雨", phone="13800000001", remaining_hours=18)
-    s2 = Student(id=next_id("student"), name="李明", phone="13800000002", remaining_hours=12)
+    s1 = Student(
+        id=next_id("student"),
+        name="张小雨",
+        phone="13800000001",
+        remaining_hours=18,
+        tags=[StudentTag.beginner, StudentTag.follow_up],
+    )
+    s2 = Student(
+        id=next_id("student"),
+        name="李明",
+        phone="13800000002",
+        remaining_hours=12,
+        tags=[StudentTag.makeup],
+    )
+    s3 = Student(
+        id=next_id("student"),
+        name="王大力",
+        phone="13800000003",
+        remaining_hours=30,
+        tags=[StudentTag.fast_learner],
+    )
+    s4 = Student(
+        id=next_id("student"),
+        name="赵小花",
+        phone="13800000004",
+        remaining_hours=8,
+        tags=[StudentTag.slow_learner, StudentTag.follow_up],
+    )
     students[s1.id] = s1
     students[s2.id] = s2
+    students[s3.id] = s3
+    students[s4.id] = s4
 
     c1 = Coach(
         id=next_id("coach"),

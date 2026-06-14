@@ -6,8 +6,12 @@ export const dashboardApi = {
 }
 
 export const studentApi = {
-  list: () => api.get('/students'),
+  list: (params) => api.get('/students', { params }),
   create: (payload) => api.post('/students', payload),
+  get: (id) => api.get(`/students/${id}`),
+  updateTags: (id, tags) => api.patch(`/students/${id}/tags`, { tags }),
+  listTagDefinitions: () => api.get('/students/tags/definitions'),
+  getAppointmentHints: (id) => api.get(`/students/${id}/appointment-hints`),
 }
 
 export const coachApi = {
